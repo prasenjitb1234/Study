@@ -1,0 +1,257 @@
+CREATE DATABASE wscube;
+
+use wscube;
+
+
+
+CREATE TABLE users (
+  id INT UNSIGNED,
+  name VARCHAR(100),
+  email VARCHAR(150),
+  password VARCHAR(100),
+  contact VARCHAR(15),
+  address TEXT,
+  dob DATE,
+  gender ENUM('M', 'F', 'O'),
+  status BOOLEAN
+);
+
+
+
+Insert : : 
+INSERT INTO users
+(id,name,email,password,contact,address,dob,gender,status)
+VALUES
+(1,"John","john@gmail.com","12345","123456789","Mumbai,Maharashtra","1999-01-10","M","1"),
+(2,"chetak","chetak@gmail.com","12345","123456789","Thane,Maharashtra","1999-01-10","M","1")
+
+
+Select : : 
+
+SELECT * FROM students;
+
+SELECT id,name,email from students;
+
+( using alias ) 
+select id, name AS "Student Name", email from students;
+
+
+select * from students where age < 20;
+select * from students where city <> "Pune";
+
+
+Update : : 
+
+UPDATE students SET city = 'Mumbai' WHERE id = 1;
+UPDATE students SET city = 'Pune' WHERE id = 2;
+
+Constraints  : : 
+NOT NULL
+UNIQUE
+DEFAULT
+CHECK 
+FOREIGN KEY
+PRIMARY KEY
+ 
+
+CREATE TABLE students
+(
+    id INT NOT NULL UNIQUE,
+    name varchar(100) not null,
+    email varchar(150) not null unique,
+    age tinyint check(age >= 18),
+    status boolean default 1
+
+);
+
+
+insert into students 
+(id,name,email,age) 
+values
+(1,"prasenjit","prasenjit@gmail.com",21);
+
+
+
+----------------------------------------------------------------------------------------------------------------------
+Operators : : AND, OR, NOT  , IN == > 
+
+
+
+select * from students where age >= 18 AND age <=25;
+
+SELECT * from students where age >= 18 AND age <=25 AND city ="pune";
+
+--
+SELECT * from students where 
+city = "pune" OR city = "mumbai";
+
+
+SELECT * FROM students
+WHERE NOT city = "Agra" AND NOT city ="MUMBAI";
+
+--
+IN Operator : : :
+
+SELECT * FROM students where age IN(19,21,23);
+
+UPDATE students
+SET fees = 5000.00
+WHERE id IN (1, 2, 3, 4, 5);
+
+UPDATE students
+SET fees = 7000.00
+WHERE id IN (6, 7, 8, 9, 10);
+
+
+--------------------
+
+LIKE Operator : : : 
+its used with two wildcards -> '%' and '_';
+
+--- starts with a : 
+select * from students where name LIKE "a%";
+
+'%a' ends with a
+'%ra%' have ra ,in any position
+'_a%'  have a, in second position
+'a_%'  starts with a, and at least 2 characters length
+'a__%' starts with a and and least 3 characters in length
+'a%t'  starts with 'a' and ends with 't'
+
+--------
+
+BETWEEN and NOT BETWEEN OPERATORS : : : 
+
+SELECT * FROM students WHERE age BETWEEN 20 and 25;
+
+SELECT * FROM students WHERE age NOT BETWEEN 20 and 25;
+
+
+--------
+
+Order by and Distinct : : : 
+
+
+select * from students order by name DESC;
+
+select * from students order by age desc;
+
+select DISTINCT city from students;
+
+select DISTINCT age from students order by age desc;
+
+
+--------------------
+NULL | NOT NULL ::::
+
+select * from students where age IS NULL;
+
+select * from students where age IS NOT NULL;
+
+select * from students where age IS  NULL AND city IS NULL;
+
+
+------------------------
+LIMIT and OFFSET : : : 
+
+-- shows from 1(0th index)  to 5th record (4th index);
+select * from students limit 5; 
+
+
+-- last 5 names 
+select * from students order by name desc limit 5;
+
+-- last 5 age 
+select * from students order by age desc limit 5;
+
+-- starting 5 records
+select * from students where age > 20 limit 5;
+
+OFFSET   :
+
+-- starts from 1st index upto 5 records 
+select * from students limit 5 offset 1
+
+-- starts from 8th upto 5 records
+select * from students limit 5 offset 7
+
+
+------------------------------------------------------
+
+AGGREGATE FUNCTIONS : : : : 
+
+COUNT(), SUM() ,AVG(),MIN() ,MAX() 
+
+-- how may students are there whose fees are greater than 5000. 
+SELECT count(id) from students where fees > 5000
+
+
+select sum(fees) from students;
+
+select avg(fees) from students;
+
+-- using alias 
+SELECT AVG(fees) AS 'avgFees' FROM students;
+
+
+min & max 
+SELECT MIN(fees) from students;
+
+SELECT MAX(fees) from students;
+
+
+
+---------------------------------------
+Update query : : 
+
+update students set age = 22 where id = 2;
+
+
+--------------------------------------
+Delete query : : : 
+
+
+delete from students where id = 28;
+
+
+-----------------------------------------------------------------
+Modify the table and add auto increament : :
+ALTER TABLE students MODIFY id INT AUTO_INCREMENT;
+
+
+-------------------------------
+add primary key : : 
+
+ALTER TABLE students ADD PRIMARY KEY (id);
+
+
+--------------------------------
+
+
+PRIMARY KEY and FOREIGN KEY : : : : 
+
+
+CREATE TABLE city (
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE studs (
+    id INT NOT NULL AUTO_INCREMENT UNIQUE,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    city_id INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (city_id) REFERENCES city(id)
+);
+
+---------------------------------
+INNER JOIN : : : 
+
+select * from studs INNER JOIN city
+on studs.city_id = city.id;
+
+
+
+

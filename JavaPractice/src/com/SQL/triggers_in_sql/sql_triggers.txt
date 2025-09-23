@@ -1,0 +1,57 @@
+
+
+create table users (
+
+user_id int primary key,
+name varchar(200),
+per_hour_salary int default 0,
+working_hour int default 0,
+total_salary int default 0
+
+
+
+);
+
+desc users;
+
+insert into users(user_id,name,per_hour_salary,working_hour) 
+values( 1001,"Prasenjit",8000,6 );
+
+select * from users;
+
+
+-----------------------------------------------
+
+create trigger [trigger_name]
+before insert
+on [table] for each row
+begin
+
+-- body of trigger
+end;  
+
+
+e.g : : : 
+
+DELIMITER //
+
+CREATE TRIGGER before_insert_user
+BEFORE INSERT
+ON users FOR EACH ROW
+BEGIN
+    SET NEW.total_salary = NEW.per_hour_salary * NEW.working_hour;
+END;
+//
+
+DELIMITER ;
+
+
+--------------------------------------------------------------
+
+
+
+
+
+
+
+
